@@ -28,8 +28,10 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error del servidor' });
   }
 });
-app.listen(4000, () => {
-  console.log('Servidor backend corriendo en http://localhost:4000');
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Servidor backend corriendo en puerto ${PORT}`);
 });
 app.post('/register', async (req, res) => {
   const { user, pass } = req.body;
