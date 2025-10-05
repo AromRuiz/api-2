@@ -106,3 +106,16 @@ app.post("/guardar_mascota", async (req, res) => {
     res.sendStatus(500);
   }
 });
+app.post("/modulo-completado", async (req, res) => {
+  const { id_usuario, modulo } = req.body;
+  try {
+    await pool.query(
+      "INSERT IGNORE INTO modulos_completados (id_usuario, modulo) VALUES (?, ?)",
+      [id_usuario, modulo]
+    );
+    res.json({ success: true, message: "Módulo marcado como completado" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error al guardar módulo" });
+  }
+});
