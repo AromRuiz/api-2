@@ -119,3 +119,16 @@ app.post("/modulo-completado", async (req, res) => {
     res.status(500).json({ success: false, message: "Error al guardar módulo" });
   }
 });
+app.get("/modulos-completados/:id_usuario", async (req, res) => {
+  const { id_usuario } = req.params;
+  try {
+    const [rows] = await db.query(
+      "SELECT modulo FROM modulos_completados WHERE id_usuario = ?",
+      [id_usuario]
+    );
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error("Error al obtener módulos completados:", error);
+    res.status(500).json({ success: false, message: "Error al obtener módulos completados" });
+  }
+});
