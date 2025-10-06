@@ -109,7 +109,7 @@ app.post("/guardar_mascota", async (req, res) => {
 app.post("/modulo-completado", async (req, res) => {
   const { id_usuario, modulo } = req.body;
   try {
-    await pool.query(
+    await db.query(
       "INSERT IGNORE INTO modulos_completados (id_usuario, modulo) VALUES (?, ?)",
       [id_usuario, modulo]
     );
