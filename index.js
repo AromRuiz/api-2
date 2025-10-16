@@ -62,10 +62,11 @@ app.post('/puntajes', async (req, res) => {
   }
 
   try {
-    await db.query(
-      'INSERT INTO puntajes (id_usuario, modulo, puntaje) VALUES (?, ?, ?)',
-      [id_usuario, modulo, puntaje]
-    );
+    await db.query(`
+  INSERT INTO puntajes (id_usuario, modulo, puntaje)
+  VALUES (?, ?, ?)
+  ON DUPLICATE KEY UPDATE puntaje = VALUES(puntaje), fecha = CURRENT_TIMESTAMP
+`, [id_usuario, modulo, puntaje]);
     console.log('[API] /puntajes guardado:', { id_usuario, modulo, puntaje });
     return res.status(200).json({ mensaje: 'Puntaje guardado correctamente' });
   } catch (err) {
