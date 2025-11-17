@@ -6,6 +6,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+function isValidUsername(name) {
+  const regex = /^[A-Za-z0-9]+$/;
+
+  if (!name) return false;
+  if (name.length < 3 || name.length > 50) return false;
+  if (!regex.test(name)) return false;
+
+  return true;
+}
+
 app.post('/login', async (req, res) => {
   const { user, pass } = req.body;
   try {
@@ -38,6 +48,12 @@ app.post('/register', async (req, res) => {
 
   if (!user || !pass) {
     return res.status(400).json({ success: false, message: 'Datos incompletos' });
+  }
+  if (!isValidUsername(user)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Usuario inválido. Solo letras y números (3-50 caracteres).'
+    });
   }
 
   try {
